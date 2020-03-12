@@ -28,7 +28,6 @@
     <ItemGroup>
         <Content Include="build\*.targets;build\*.props">
             <PackagePath>%(Identity)</PackagePath>
-            <BuildAction>Content</BuildAction>
         </Content>
     </ItemGroup>
     <Target Name="PackTaskDependencies" BeforeTargets="GenerateNuspec">
@@ -38,11 +37,10 @@
         -->
         <ItemGroup>
             <_PackageFiles
-                Include="bin\$(Configuration)\*\*.dll"
-                Exclude="bin\$(Configuration)\*\$(AssemblyName).dll">
-                <PackagePath>tools%(RecursiveDir)</PackagePath>
+                Include="$(OutDir)\*.dll"
+                Exclude="$(OutDir)\$(AssemblyName).dll">
+                <PackagePath>tools\$(TargetFramework)</PackagePath>
                 <Visible>false</Visible>
-                <BuildAction>Content</BuildAction>
             </_PackageFiles>
         </ItemGroup>
     </Target>
