@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <UsingTask TaskName="MarkdownReleaseNotes.Build.RenderReleaseNotes"
+               AssemblyFile="$(MSBuildThisFileDirectory)..\tools\netstandard2.1\MarkdownReleaseNotes.Build.dll" />
+    <Target Name="RenderMarkdownReleaseNotes"
+            BeforeTargets="GenerateNuSpec"
+            DependsOnTargets="_ValidateMarkdownChangelogItem">
+        <RenderReleaseNotes ChangelogFile="@(Changelog)" Version="$(Version)">
+            <Output TaskParameter="GeneratedReleaseNotes" PropertyName="PackageReleaseNotes" />
+        </RenderReleaseNotes>
+    </Target>
+    <Target Name="_ValidateMarkdownChangelogItem">
+        <Error Text="Changelog file not defined. Did you forget to define the &lt;Changelog&gt; item?"
+               Condition="'@(Changelog)' == ''" />
+        <Error Text="Multiple changelog files were found: @(Changelog, ', ')."
+               Condition="'@(Changelog-&gt;Count())' &gt; 1" />
+    </Target>
+</Project>

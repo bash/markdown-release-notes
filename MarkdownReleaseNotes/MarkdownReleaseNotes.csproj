@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <AssemblyName>MarkdownReleaseNotes</AssemblyName>
+        <RootNamespace>MarkdownReleaseNotes</RootNamespace>
+        <Version>0.1.0</Version>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Messerli.Utility" Version="0.2.2" />
+        <PackageReference Include="Microsoft.Toolkit.Parsers" Version="6.0.0" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <AssemblyName>MarkdownReleaseNotes.Build</AssemblyName>
+        <RootNamespace>MarkdownReleaseNotes.Build</RootNamespace>
+        <Version>0.1.0</Version>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+    <PropertyGroup>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
+    </PropertyGroup>
+    <PropertyGroup>
+        <NoWarn>$(NoWarn);NU5128</NoWarn>
+        <PackageOutputPath>$(MSBuildProjectDirectory)\..\nupkg</PackageOutputPath>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Build.Framework" Version="16.4.0" ExcludeAssets="Runtime" />
+        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.4.0" ExcludeAssets="Runtime" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\MarkdownReleaseNotes\MarkdownReleaseNotes.csproj" PrivateAssets="All"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="build\*.targets;build\*.props">
+            <PackagePath>%(Identity)</PackagePath>
+            <BuildAction>Content</BuildAction>
+        </Content>
+    </ItemGroup>
+    <Target Name="PackTaskDependencies" BeforeTargets="GenerateNuspec">
+        <!--
+        The include needs to happen after output has been copied to build output folder
+        but before NuGet generates a nuspec. See https://github.com/NuGet/Home/issues/4704.
+        -->
+        <ItemGroup>
+            <_PackageFiles
+                Include="bin\$(Configuration)\*\*.dll"
+                Exclude="bin\$(Configuration)\*\$(AssemblyName).dll">
+                <PackagePath>tools%(RecursiveDir)</PackagePath>
+                <Visible>false</Visible>
+                <BuildAction>Content</BuildAction>
+            </_PackageFiles>
+        </ItemGroup>
+    </Target>
+</Project>

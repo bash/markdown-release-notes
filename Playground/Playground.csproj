@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.Build.NoTargets/1.0.94">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <Version>0.3.0</Version>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Messerli.Utility" Version="0.2.2" />
+        <PackageReference Include="MarkdownReleaseNotes.Build" Version="0.1.0" PrivateAssets="all" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="packages\**\*" Visible="false" />
+    </ItemGroup>
+    <Target Name="PrintReleaseNotes" AfterTargets="RenderMarkdownReleaseNotes">
+        <Message Importance="high" Text="$(PackageReleaseNotes)" />
+    </Target>
+</Project>
